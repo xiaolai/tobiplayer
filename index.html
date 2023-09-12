@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>ToBI Player</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div id="waveform"></div>
+    <div id="playerControls">
+      <button id="openButton">Open</button>
+      <button id="playButton" disabled>Play</button>
+      <label> <input id="checkbox" type="checkbox" checked="${loop}"/> Loop </label>
+      <label>| Zoom <input id="range" type="range" min="15" max="300" value="100" /></label>
+    </div>
+    <div id="textarea">
+      <textarea id="text" name="text" rows="10" cols="60"></textarea>
+    </div>
+
+
+    <script src="./renderer.js" type="module"></script>
+  </body>
+</html>
