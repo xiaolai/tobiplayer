@@ -74,7 +74,7 @@ pitchWorker.onmessage = (e) => {
   let prevY = 0
   frequencies.forEach((frequency, index) => {
     if (!frequency) return
-    const y = Math.round(height - (frequency / (baseFrequency * 2)) * height)
+    const y = Math.round(height - (frequency / (baseFrequency * 2.8)) * height) // 2.8, the bigger the lower the pitch contour positioned.
     ctx.fillStyle = y > prevY ? pitchDownColor : pitchUpColor
     ctx.fillRect(index, y, pointSize, pointSize)
     prevY = y
