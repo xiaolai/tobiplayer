@@ -46,15 +46,14 @@ input#checkbox, label {
   vertical-align: middle;
 }
 
+label {
+  margin-top: -5px
+}
+
 input#range {
   position: relative;
-  width: 300px;
+  width: 550px;
   height: 1px;
   color: #333;
   vertical-align: middle;
-  /* margin-top: -10px !important; */
 }
-
-/* #playerControls {
-  vertical-align: middle;
-} */
