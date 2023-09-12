@@ -18,6 +18,7 @@
   "license": "ISC",
   "dependencies": {
     "electron": "^26.2.0",
+    "electron-builder": "^24.6.4",
     "pitchfinder": "^2.3.2",
     "wavesurfer.js": "^7.3.1"
   }
