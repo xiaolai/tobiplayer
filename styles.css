@@ -5,7 +5,7 @@ body {
 
 #waveform {
   width: 785px;
-  height: 140px;
+  height: 180px;
   /* background-color: #333; */
   margin-top: 10px;
   /* border-bottom: 2px solid #333; */
@@ -51,9 +51,9 @@ label {
 }
 
 input#range {
-  position: relative;
-  width: 550px;
+  width: 780px;
   height: 1px;
-  color: #333;
+  color: #808080;
   vertical-align: middle;
+  margin-top: 10px;
 }

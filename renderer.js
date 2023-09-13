@@ -4,9 +4,7 @@ import RegionsPlugin from './node_modules/wavesurfer.js/dist/plugins/regions.esm
 const pitchWorker = new Worker('./pitch-worker.js', { type: 'module' })
 
 const { tobiPlayer } = window;
-
-const openButton = document.getElementById('openButton');
-const playButton = document.getElementById('playButton');
+const doubleClickWaveform = document.getElementById('waveform');
 
 const ws = WaveSurfer.create({
   container: '#waveform',
@@ -17,6 +15,7 @@ const ws = WaveSurfer.create({
   autoCenter: false,
   loopSelection: true,
   loop: true,
+  mediaControls: true,
 })
 
 ws.on('interaction', () => {
@@ -33,19 +32,15 @@ ws.once('decode', () => {
   })
 })
 
-openButton.addEventListener('click', async () => {
+doubleClickWaveform.addEventListener('dblclick', async () => {
   const filePath = await tobiPlayer.openDialog();
   if (filePath) {
-    playButton.disabled = false;
     const fileName = filePath.split('/').pop();
     tobiPlayer.setAppTitle(fileName);
   };
   ws.load(filePath);
 });
 
-playButton.addEventListener('click', () => {
-  ws.playPause()
-});
 
 // Pitch detection
 ws.on('decode', () => {
@@ -75,7 +70,7 @@ pitchWorker.onmessage = (e) => {
   frequencies.forEach((frequency, index) => {
     if (!frequency) return
     const hratio = 0.7 // the bigger the narrower the pitch contour drawn on canvas.
-    const marginTop = 30 // the bigger the lower the pitch contour positioned.
+    const marginTop = 40 // the bigger the lower the pitch contour positioned.
     const y = Math.round(height - (frequency / (baseFrequency * 2)) * height) * hratio + marginTop
 
     ctx.fillStyle = y > prevY ? pitchDownColor : pitchUpColor
@@ -116,11 +111,6 @@ wsRegions.enableDragSelection({
 
 // Loop a region on click
 let loop = true
-// Toggle looping with a checkbox
-document.querySelector('input[type="checkbox"]').onclick = (e) => {
-  loop = e.target.checked
-}
-
 {
   let activeRegion = null
   wsRegions.on('region-in', (region) => {
