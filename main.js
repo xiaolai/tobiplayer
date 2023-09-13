@@ -8,13 +8,13 @@ function createWindow() {
     height: 350,
     resizable: false,
     webPreferences: {
-      nodeIntegration: false,
+      nodeIntegration: true,
       contextIsolation: true,
       preload: __dirname + '/preload.js'
     }
   });
 
-  mainWindow.loadFile('index.html');
+  mainWindow.loadFile('./index.html');
   // mainWindow.webContents.openDevTools();
 }
 

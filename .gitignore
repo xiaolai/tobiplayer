@@ -2,6 +2,9 @@
 .env
 .envrc
 dist/
+dist/*
 node_modules/
+node_modules/*
 .vscode/
+.vscode/*
 *.log
