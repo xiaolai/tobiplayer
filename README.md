@@ -28,7 +28,7 @@ nvm use 20.5.1
 然后，在项目目录下：
 
 ```bash
-git clone git@github.com:xiaolai/tobiplayer.git
+git clone https://github.com/xiaolai/tobiplayer.git
 cd tobiplayer
 npm install
 npm start
