@@ -1,7 +1,7 @@
-.DS_Store
-.env
-.envrc
-dist
 node_modules
+dist
+build
+bin
+
 .vscode
-*.log
+.DS_Store

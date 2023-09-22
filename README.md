@@ -9,11 +9,9 @@
 
 我没单独申请 Apple Developer 账号 —— 所以，也没办法把这个播放器打包成 APP 分发给别人。
 
-![](screenshot.png)
+![](ToBI-Player.gif)
 
 这不是个严肃的产品，只是自己用来解决自身需要的东西，甚至连 “玩具” 都称不上…… 有太多细节顾不上，就先这样凑合着用，毕竟，对我来说 “写程序” 并不是最主要的工作 —— 请理解。
-
-另外一个已知 BUG 是：打开第二个语音文件的时候，会多出一个 `selected region`…… 没空研究文档了，解决办法是，`CMD + r` 刷新一下窗口…… 
 
 估计想要用这个东西的人，也不是啥程序员…… 不过，想要用，就得自己安装 `nodejs`：
 
@@ -21,6 +19,12 @@
 brew install nvm
 nvm install 20.5.1
 nvm use 20.5.1
+```
+
+语音文字识别，我使用的是 [stable-ts](https://github.com/jianfch/stable-ts)，略慢（相对于 [whisper.cpp](https://github.com/ggerganov/whisper.cpp)）…… 需要本地 Mac 已经[安装 Python3](https://docs.conda.io/projects/miniconda/en/latest/)，而后安装 `stable-ts`：
+
+```bash
+pip install -U stable-ts
 ```
 
 > **注意** 如果不知道如何在 `Terminal` 程序中使用 `brew` 命令的话，可以先去看看[这篇文章: 《从 Terminal 开始……》](https://github.com/xiaolai/apple-computer-literacy/blob/main/start-from-terminal.md)……
@@ -31,11 +35,11 @@ nvm use 20.5.1
 git clone git@github.com:xiaolai/tobiplayer.git
 cd tobiplayer
 npm install
-npm start
+npm run dev
 ```
 
 打包成 APP 自己本地使用的话，就：
 
 ```bash
-npm run build
+npm run build:mac
 ```
