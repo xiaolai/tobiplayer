@@ -345,7 +345,7 @@ const handleClick = (event: MouseEvent) => {
   if (event.target instanceof HTMLElement){
     if (event.target.tagName === "WORD") {
       const word_start = (event.target as HTMLElement).getAttribute('start');
-      // const word_end = (event.target as HTMLElement).getAttribute('end');
+      const word_end = (event.target as HTMLElement).getAttribute('end');
       const segment_start = (event.target.closest('segment') as HTMLElement).getAttribute('start');
       const segment_end = (event.target.closest('segment') as HTMLElement).getAttribute('end');
       // const segment_content = (event.target.closest('segment') as HTMLElement).innerText;
@@ -361,13 +361,17 @@ const handleClick = (event: MouseEvent) => {
         const segmentEndNumber = segment_end ? Number(segment_end) : 0;
         const regionDuration = segmentEndNumber - segmentStartNumber;
         const mpps = waveformWidth / regionDuration * 0.8;
-        ws.zoom(mpps)          
-
+        ws.zoom(mpps)
+        
+        const regionOffset = 0.2 // extend the region by 0.2 seconds forward and backward
+        const region_start = Number(segment_start) - regionOffset < 0 ? 0 : Number(segment_start) - regionOffset;
+        const region_end = Number(segment_end) + regionOffset > ws.getDuration() ? ws.getDuration() : Number(segment_end) + regionOffset;
+        
         ws.getActivePlugins()[0].clearRegions()
         const random = (min:number, max:number) => Math.random() * (max - min) + min        
         ws.getActivePlugins()[0].addRegion({
-          start: Number(segment_start),
-          end: Number(segment_end),
+          start: region_start,
+          end: region_end,
           color: String(`rgba(${random(0, 255)}, ${random(0, 255)}, ${random(0, 255)}, 0.03)`),
           drag: true,
           resize: true,
@@ -392,10 +396,12 @@ onMounted(() => {
     <div id="waveform"></div>
     <div id="player-controls">
       <img class='imageButton' id="open-audio-file" src="/icons/eject.png" alt="open" @click="loadFile">
-      <img v-if="normalSpeed" class='imageButton' id="turtle" src="/icons/turtle.png" alt="zoom to extents" @click="toggleSpeed"> 
-      <img v-else class='imageButton' id="turtle" src="/icons/turtle-black.png" alt="zoom to extents" @click="toggleSpeed"> 
-      <img v-if="isPlaying" class="imageButton" src="/icons/pause.png" alt="pause" @click="togglePlayPause">
-      <img v-else class="imageButton" src="/icons/play.png" alt="play" @click="togglePlayPause">
+      <img v-if="normalSpeed" id= "toggle-speed" class='imageButton' src="/icons/turtle.png" alt="zoom to extents" @click="toggleSpeed"> 
+      <img v-else class='imageButton' id="toggle-speed" src="/icons/turtle-black.png" alt="zoom to extents" @click="toggleSpeed"> 
+      <!-- <img class='imageButton' id="extend-backward" src="/icons/extend-backward.png" alt="zoom in" @click="extendBackward" >  -->
+      <img v-if="isPlaying" class="imageButton" id="play-pause" src="/icons/pause.png" alt="pause" @click="togglePlayPause">
+      <img v-else class="imageButton" id="play-pause" src="/icons/play.png" alt="play" @click="togglePlayPause">
+      <!-- <img class='imageButton' id="extend-forward" src="/icons/extend-forward.png" alt="zoom in" @click="extendForwad" >  -->
       <img v-if="loopRegion" class="imageButton" src="/icons/repeat-one.png" alt="loop" @click="toggleLoop">
       <img v-else class="imageButton" src="/icons/repeat.png" alt="play" @click="toggleLoop">
       <img class='imageButton' id="volume-down" src="/icons/volume-down.png" alt="zoom to extents" @click="volumeDown">       
