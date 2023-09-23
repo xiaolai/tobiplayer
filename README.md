@@ -29,7 +29,7 @@ pip install -U stable-ts
 
 > **注意** 如果不知道如何在 `Terminal` 程序中使用 `brew` 命令的话，可以先去看看[这篇文章: 《从 Terminal 开始……》](https://github.com/xiaolai/apple-computer-literacy/blob/main/start-from-terminal.md)……
 
-然后，在项目目录下：
+然后：
 
 ```bash
 git clone https://github.com/xiaolai/tobiplayer.git
@@ -43,3 +43,4 @@ npm run dev
 ```bash
 npm run build:mac
 ```
+（我还没研究明白怎么把本地的 python 脚本与 electron-builder 正确搭配…… 2023.09.23）
