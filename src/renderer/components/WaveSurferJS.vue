@@ -374,6 +374,7 @@ const handleClick = (event: MouseEvent) => {
           // content: segment_content
         })
         ws.play();
+        isPlaying.value = true;
       }
     }
   }
