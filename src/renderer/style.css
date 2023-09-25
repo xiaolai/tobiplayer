@@ -94,9 +94,10 @@ body {
   overflow-y: hidden;
 }
 
-u {
+u{
   font-weight: normal;
   color: brown;
+  text-decoration: underline;
   text-decoration-color: #ddd;
   text-decoration-thickness: 3px;
 }

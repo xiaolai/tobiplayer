@@ -5,7 +5,6 @@ export const useAppStore = defineStore('app', () => {
   const isPlaying = ref(false);
   const playRegion = ref(true);
   const loopRegion = ref(true);
-  const showTranscript = ref(true); 
   const activatedSurferName = ref('');
   const transcriptText = ref('');
   const popupMenuCloseTrigger = ref(0);

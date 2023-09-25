@@ -21,10 +21,10 @@ function createWindow () {
   if (process.env.NODE_ENV === 'development') {
     const rendererPort = process.argv[2];
     // wider window to show dev tools in dev mode
-    // mainWindow.setSize(800, 600);
-    mainWindow.setSize(1300, 720);
-    mainWindow.setResizable(true);
-    mainWindow.webContents.openDevTools();
+    mainWindow.setSize(800, 600);
+    // mainWindow.setSize(1300, 720);
+    // mainWindow.setResizable(true);
+    // mainWindow.webContents.openDevTools();
     mainWindow.loadURL(`http://localhost:${rendererPort}`);
   }
   else {

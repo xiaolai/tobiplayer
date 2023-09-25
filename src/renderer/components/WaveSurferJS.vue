@@ -14,14 +14,9 @@ const {
 } = storeToRefs(appStore)
 
 let ws:any = null
-let recordWs:any = null
-let record:any = null
 let activeRegion:any = null;
-const containerEl = ref(null)
-const micEl = ref(null)
 const wsPeaks = ref(null)
 const filled = ref(false)
-const isRecording = ref(false)
 let wsmmps = ref(10)
 let isMuted = ref(false)
 let normalSpeed = ref(true)
@@ -119,7 +114,6 @@ function createWs(audio: any, url: string) {
         } else {
           wordElement.innerHTML = `<u>${wordElement.textContent}</u>`;
         }
-        wordElement.classList.add('highlight');
       } else {
         // Remove the CSS class if the word is not currently playing
         wordElement.innerHTML = wordElement.textContent;
@@ -163,6 +157,18 @@ function createWs(audio: any, url: string) {
     togglePlayPause()
     _ws.playPause()
   })
+
+  wsRegions.on('region-updated', (region:any, e:any) => {
+    console.log('region changed')
+    region === activeRegion
+    const waveformContainer = document.querySelector('#waveform');        
+    const waveformWidth = (waveformContainer as HTMLElement).offsetWidth;
+    const regionDuration = region.end - region.start;
+    wsmmps.value = waveformWidth / regionDuration;     
+    _ws.zoom(wsmmps.value);
+    _ws.seekTo(region.start / _ws.getDuration());
+  })
+
   return _ws;
 };
 
@@ -243,9 +249,7 @@ async function loadFile() {
 
     filled.value = true;
     activatedSurferName.value = props.name;
-    console.log(transcriptText);
     tobiPlayer.createTranscript(filePath).then((ts:any) => {
-      console.log(ts, transcriptText);
       transcriptText.value = ts
     });
   };
@@ -262,27 +266,25 @@ function clear() {
 
 function zoomIn(){
   if (ws) {
-    wsmmps.value = ws.options.minPxPerSec + 10
+    wsmmps.value = ws.options.minPxPerSec * 1.2
     if (wsmmps.value > 300) {
       wsmmps.value = 300;
     }
-    ws.setOptions.minPxPerSec = wsmmps.value;    
+    ws.seekTo(ws.getActivePlugins()[0].getRegions()[0].start / ws.getDuration());
     ws.zoom(wsmmps.value);
     console.log(ws.options.minPxPerSec);
-    ws.seekTo(ws.getCurrentTime() / ws.getDuration());
   }
 }
 
 function zoomOut(){
   if (ws) {
-    wsmmps.value = ws.options.minPxPerSec -10    
+    wsmmps.value = ws.options.minPxPerSec * 0.8   
     if (wsmmps.value < 10) {
       wsmmps.value = 10;
     }
-    ws.setOptions.minPxPerSec = wsmmps.value;
+    ws.seekTo(ws.getActivePlugins()[0].getRegions()[0].start / ws.getDuration());
     ws.zoom(wsmmps.value);
     console.log(ws.options.minPxPerSec);
-    ws.seekTo(ws.getCurrentTime() / ws.getDuration());
   }
 }
 
@@ -339,7 +341,7 @@ function toggleSpeed(){
 }
 
 const clickableText = ref<HTMLElement | null>(null);
-  
+
 // Handle the span click event
 const handleClick = (event: MouseEvent) => {
   if (event.target instanceof HTMLElement){
@@ -357,16 +359,15 @@ const handleClick = (event: MouseEvent) => {
         // update the activeRegion's start and end
         const waveformContainer = document.querySelector('#waveform');        
         const waveformWidth = (waveformContainer as HTMLElement).offsetWidth;
-        const segmentStartNumber = segment_start ? Number(segment_start) : 0;
-        const segmentEndNumber = segment_end ? Number(segment_end) : 0;
-        const regionDuration = segmentEndNumber - segmentStartNumber;
-        const mpps = waveformWidth / regionDuration * 0.8;
-        ws.zoom(mpps)
-        
+
         const regionOffset = 0.2 // extend the region by 0.2 seconds forward and backward
         const region_start = Number(segment_start) - regionOffset < 0 ? 0 : Number(segment_start) - regionOffset;
-        const region_end = Number(segment_end) + regionOffset > ws.getDuration() ? ws.getDuration() : Number(segment_end) + regionOffset;
+        const region_end = Number(segment_end) + regionOffset > ws.getDuration() ? ws.getDuration() : Number(segment_end) + regionOffset;        
         
+        const regionDuration = region_end - region_start;
+        wsmmps.value = waveformWidth / regionDuration;
+        ws.zoom(wsmmps.value)
+             
         ws.getActivePlugins()[0].clearRegions()
         const random = (min:number, max:number) => Math.random() * (max - min) + min        
         ws.getActivePlugins()[0].addRegion({
@@ -387,6 +388,11 @@ const handleClick = (event: MouseEvent) => {
 
 onMounted(() => {
   clickableText.value?.addEventListener('click', handleClick); 
+  window.addEventListener('keydown', (e) => {
+    if (e.key === ' ') {
+      togglePlayPause()
+    }
+  })
 });
 </script>
 
@@ -398,10 +404,8 @@ onMounted(() => {
       <img class='imageButton' id="open-audio-file" src="/icons/eject.png" alt="open" @click="loadFile">
       <img v-if="normalSpeed" id= "toggle-speed" class='imageButton' src="/icons/turtle.png" alt="zoom to extents" @click="toggleSpeed"> 
       <img v-else class='imageButton' id="toggle-speed" src="/icons/turtle-black.png" alt="zoom to extents" @click="toggleSpeed"> 
-      <!-- <img class='imageButton' id="extend-backward" src="/icons/extend-backward.png" alt="zoom in" @click="extendBackward" >  -->
       <img v-if="isPlaying" class="imageButton" id="play-pause" src="/icons/pause.png" alt="pause" @click="togglePlayPause">
       <img v-else class="imageButton" id="play-pause" src="/icons/play.png" alt="play" @click="togglePlayPause">
-      <!-- <img class='imageButton' id="extend-forward" src="/icons/extend-forward.png" alt="zoom in" @click="extendForwad" >  -->
       <img v-if="loopRegion" class="imageButton" src="/icons/repeat-one.png" alt="loop" @click="toggleLoop">
       <img v-else class="imageButton" src="/icons/repeat.png" alt="play" @click="toggleLoop">
       <img class='imageButton' id="volume-down" src="/icons/volume-down.png" alt="zoom to extents" @click="volumeDown">       
