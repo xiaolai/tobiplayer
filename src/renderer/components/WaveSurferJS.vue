@@ -3,7 +3,6 @@ import { storeToRefs } from 'pinia'
 import { computed, defineProps, onMounted, ref, watch } from 'vue'
 import WaveSurfer from 'wavesurfer.js'
 import RegionsPlugin from 'wavesurfer.js/dist/plugins/regions.esm.js'
-import RecordPlugin from 'wavesurfer.js/dist/plugins/record.esm.js'
 import Pitchfinder from 'pitchfinder'
 import { useAppStore } from '../stores'
 
@@ -115,9 +114,7 @@ function createWs(audio: any, url: string) {
           wordElement.innerHTML = `<u>${wordElement.textContent}</u>`;
         }
       } else {
-        // Remove the CSS class if the word is not currently playing
         wordElement.innerHTML = wordElement.textContent;
-        wordElement.classList.remove('highlight');
       }
     }    
   })
@@ -152,7 +149,7 @@ function createWs(audio: any, url: string) {
   })
 
   wsRegions.on('region-clicked', (region:any, e:any) => {
-    e.stopPropagation() // prevent triggering a click on the waveform
+    // e.stopPropagation() // prevent triggering a click on the waveform
     activeRegion = region
     togglePlayPause()
     _ws.playPause()
