@@ -101,3 +101,8 @@ u{
   text-decoration-color: #ddd;
   text-decoration-thickness: 3px;
 }
+
+#waveform ::part(region) {
+  color: brown;
+  font-weight: bold;
+}

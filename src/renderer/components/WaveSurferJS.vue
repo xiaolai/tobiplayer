@@ -113,6 +113,10 @@ function createWs(audio: any, url: string) {
         } else {
           wordElement.innerHTML = `<u>${wordElement.textContent}</u>`;
         }
+        // update region's content as playing word
+        ws.getActivePlugins()[0].getRegions()[0].setOptions({
+          content: wordElement.textContent,
+        })
       } else {
         wordElement.innerHTML = wordElement.textContent;
       }
