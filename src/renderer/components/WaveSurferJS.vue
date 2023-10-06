@@ -168,6 +168,8 @@ function createWs(audio: any, url: string) {
     wsmmps.value = waveformWidth / regionDuration;     
     _ws.zoom(wsmmps.value);
     _ws.seekTo(region.start / _ws.getDuration());
+    _ws.play();
+    isPlaying.value = true;
   })
 
   return _ws;
