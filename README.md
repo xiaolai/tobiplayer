@@ -7,6 +7,8 @@
 
 ## 安装
 
+### For Mac
+
 我没单独申请 Apple Developer 账号 —— 所以，也没办法把这个播放器打包成 APP 分发给别人。
 
 ![](ToBI-Player.gif)
@@ -44,3 +46,52 @@ npm run dev
 npm run build:mac
 ```
 （我还没研究明白怎么把本地的 python 脚本与 electron-builder 正确搭配…… 2023.09.23）
+
+
+
+### For Windows
+
+安装说明请参考For Mac部分，下面仅为For Windows的操作步骤，系统为Windows 11，终端为Windows PowerShell：
+
+1. [下载](https://nodejs.org/dist/v20.9.0/node-v20.9.0-x64.msi)并安装Node.js；
+
+2. 检查Node版本及是否安装正常：
+
+   ```powershell
+   npm -v
+   node -v
+   ```
+
+   如果分别返回版本号，则表示安装正常。
+
+3. 然后：
+
+   ```powershell
+   git clone https://github.com/xiaolai/tobiplayer.git
+   cd tobiplayer
+   npm install --save-dev electron
+   npm install
+   ```
+
+   > 与Mac不同的是，在Windows上如果需先执行`npm install --save-dev electron`，否则，执行`npm install`时会报错。
+
+4. 通过Node.js使用ToBI Player：
+
+   ```powershell
+   npm run dev
+   ```
+
+   > 该Windows PowerShell窗口需保持打开状态，不可关闭。
+
+5. 打包成独立的程序使用ToBI Player：
+
+   ```powershell
+   npm run build:win
+   ```
+   打包后的独立APP在`tobiplayer`目录下的`dist`子目录内：
+   
+   * `tobi-player Setup 0.1.0.exe`为安装包，可安装后使用；
+   
+   * `win-unpacked`文件夹内的`tobi-player.exe`为免安装可以直接运行的程序。
+   
+   > 打包后的程序运行将不再依赖Windows PowerShell窗口，且可将安装包提供给其他人安装使用。
