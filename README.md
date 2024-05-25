@@ -1,6 +1,8 @@
 # ToBI Player
 
-== 目前此项目已经演化成 Enjoy App，请转向 https://github.com/xiaolai/everyone-can-use-english 查看…… ==
+> [!TIP]
+> 目前此项目已经演化成 [Enjoy App](https://1000h.org](https://1000h.org/enjoy-app/)，或转向 https://github.com/xiaolai/everyone-can-use-english 查看……
+
 
 这是我用来播放短语音文件的小工具，主要用来辅助我自己的英语跟读训练。没什么特别的，就是在播放的时候，在波谱（Waveform）上多叠加了一个 “音高标注”（Pitch Contour），以便我可以直观地 “看到” 语音的音高变化 —— 这对我来说很重要，因为我是五音不全的人，识别音高有生理困难，所以，我更需要 “看到” 而不仅仅是 “听到”……
 
